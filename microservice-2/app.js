@@ -3,9 +3,9 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.get('/api/resource', (req, res) => {
+app.get('/', (req, res) => {
   // Your microservice-2 logic here
-  res.json({ message: 'Hello from Microservice 2!' });
+  res.json({ message: 'Hello from Microservice:2 VERSION:1' });
 });
 
 app.listen(PORT, () => {
