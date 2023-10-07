@@ -1,25 +1,3 @@
-# istio-config.yaml
-
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: my-gateway
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - hosts:
-    - "*"
-    ports:
-    - number: 80
-      protocol: HTTP
-      name: http
-      targetPort: 8080
-    - number: 81
-      protocol: HTTP
-      name: http
-      targetPort: 8081
-
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -27,15 +5,14 @@ metadata:
 spec:
   hosts:
     - "microservice-1"
-  gateways:
-    - my-gateway
   http:
     - route:
         - destination:
             host: microservice-1
+            subset: v1
             port:
               number: 80
-
+---
 
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -44,11 +21,35 @@ metadata:
 spec:
   hosts:
     - "microservice-2"
-  gateways:
-    - my-gateway
   http:
     - route:
         - destination:
-            host: microservice-2
+            host: microservice-2 # The Target DNS name
+            subset: v1
             port:
               number: 81
+              # The name defined in the DestinationRule
+          weight: 100
+        - destination:
+            host: microservice-2 # The Target DNS name
+            subset: v2
+            port:
+              number: 81 # The name defined in the DestinationRule
+          weight: 0
+
+---
+
+kind: DestinationRule       # Defining which pods should be part of each subset
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: grouping-rules-for-microservice-2 # This can be anything you like.
+  namespace: default
+spec:
+  host: microservice-2 # Service
+  subsets:
+    - labels:   # SELECTOR.
+        version: v1 # find pods with label "v1"
+      name: v1
+    - labels:
+        version: v2
+      name: v2

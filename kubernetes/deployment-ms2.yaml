@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-2
+  name: microservice-2-version1
 spec:
   replicas: 1
   selector:
@@ -11,9 +11,31 @@ spec:
     metadata:
       labels:
         app: microservice-2
+        version: v1
     spec:
       containers:
         - name: microservice-2
-          image: sahilmisri27/microservice-2:v7
+          image: sahilmisri27/microservice-2:v1
+          ports:
+            - containerPort: 3001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-2-version2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-2
+  template:
+    metadata:
+      labels:
+        app: microservice-2
+        version: v2
+    spec:
+      containers:
+        - name: microservice-2
+          image: sahilmisri27/microservice-2:v2
           ports:
             - containerPort: 3001

@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3001;
 
 app.get('/', (req, res) => {
   // Your microservice-2 logic here
-  res.json({ message: 'Hello from Microservice:2 VERSION:1' });
+  res.json({ message: 'Hello from Microservice:2 VERSION:2' });
 });
 
 app.listen(PORT, () => {
