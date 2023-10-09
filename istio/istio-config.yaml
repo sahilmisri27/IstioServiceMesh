@@ -29,13 +29,13 @@ spec:
             port:
               number: 81
               # The name defined in the DestinationRule
-          weight: 100
+          weight: 50
         - destination:
             host: microservice-2 # The Target DNS name
             subset: v2
             port:
               number: 81 # The name defined in the DestinationRule
-          weight: 0
+          weight: 50
 
 ---
 
