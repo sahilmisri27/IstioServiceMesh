@@ -2,14 +2,14 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-const MICROSERVICE_2_URL = 'http://microservice-2:81'; // Istio service name
-app.get('/', (req, res) => {
+const MICROSERVICE_2_URL = 'http://microservice-2:3001/m2';
+app.get('/m1', (req, res) => {
   res.json({ message: 'Hello from Microservice:1' });
 });
 
-app.get('/service2', async (req, res) => {
+app.get('/m1/service2', async (req, res) => {
   try {
     // Make an HTTP GET request to microservice-2
     const response = await axios.get(`${MICROSERVICE_2_URL}`);

@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-2
+  labels:
+    app: microservice-2
+    service: microservice-2
+spec:
+  ports:
+  - port: 3001
+    name: http
+  selector:
+    app: microservice-2
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: microservice-2
+  labels:
+    account: microservice-2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-2
+  labels:
+    app: microservice-2
+    version: test2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-2
+      version: test2
+  template:
+    metadata:
+      labels:
+        app: microservice-2
+        version: test2
+    spec:
+      serviceAccountName: microservice-2
+      containers:
+      - name: microservice-2
+        image: sahilmisri27/microservice-2:test2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3001
