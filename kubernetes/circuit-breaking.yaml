@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: circuit-breaker-for-the-entire-default-namespace
+spec:
+  host: "microservice-2.default.svc.cluster.local"      
+
+  trafficPolicy:
+    outlierDetection:
+      maxEjectionPercent: 100
+      consecutive5xxErrors: 1
+      interval: 10s
+      baseEjectionTime: 3m
+      maxEjectionPercent: 100

@@ -1,0 +1,22 @@
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: microservice-2
+  namespace: default
+spec:
+  hosts:
+  - "*"
+  gateways:
+    - ingress-gateway-configuration
+  http:
+    - fault:
+        abort:
+          httpStatus: 503
+          percentage:
+            value: 100
+      route:
+        - destination:
+            host: microservice-2
+            subset: test4
+            port:
+              number: 3000
